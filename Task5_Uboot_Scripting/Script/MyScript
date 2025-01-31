@@ -1,0 +1,10 @@
+setenv serverip 192.168.1.19
+
+setenv CheckFileMmc "if mmc dev;then run LoadFromFat;else run LoadFromTftp;fi"
+
+setenv LoadFromFat "if fatload mmc 0:1 0x80000 main.img;then go 0x80000;else run LoadFromTftp;fi"
+
+setenv LoadFromTftp "if tftp 0x80000 main.img;then echo done;else echo fail;fi"
+
+run CheckFileMmc
+
