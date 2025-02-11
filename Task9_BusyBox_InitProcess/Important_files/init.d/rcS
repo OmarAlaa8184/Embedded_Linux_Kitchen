@@ -1,0 +1,10 @@
+#! /bin/sh
+
+mount -t sysfs sys /sys
+mdev -s
+mount -t proc proc /proc
+mount -t vfat /dev/sda1 /boot
+
+
+
+
