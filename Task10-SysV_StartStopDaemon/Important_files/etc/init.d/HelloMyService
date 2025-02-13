@@ -1,0 +1,51 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          HelloMyService
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     4 
+# Default-Stop:      1 2 3
+# Short-Description: HelloMyService
+# Description:       Starts and stops HelloMyService daemon.
+### END INIT INFO
+
+DAEMON="/usr/bin/HelloMyService.sh"
+DAEMON_NAME="HelloMyService"
+PIDFILE="/var/run/$DAEMON_NAME.pid"
+DESC="HelloMyService"
+
+case "$1" in
+  start)
+    echo "Starting $DESC..."
+    start-stop-daemon --start --background --pidfile $PIDFILE --exec $DAEMON --make-pidfile
+    echo "$DESC started."
+    ;;
+  
+  stop)
+    echo "Stopping $DESC..."
+    start-stop-daemon --stop --pidfile $PIDFILE --exec $DAEMON
+    echo "$DESC stopped."
+    ;;
+  
+  restart)
+    $0 stop
+    sleep 2
+    $0 start
+    ;;
+  
+  status)
+    if [ -e "$PIDFILE" ] && kill -0 $(cat "$PIDFILE") 2>/dev/null; then
+      echo "$DESC is running."
+    else
+      echo "$DESC is not running."
+    fi
+    ;;
+  
+  *)
+    echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+    ;;
+esac
+
+exit 0
+
